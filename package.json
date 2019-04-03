@@ -1,7 +1,7 @@
 {
-  "name": "simple-vue-template",
+  "name": "reader",
   "version": "1.0.0",
-  "description": "a simple template of vue",
+  "description": "a reader",
   "author": "tony <1332988826@qq.com>",
   "scripts": {
     "dev": "cross-env BABEL_ENV=development webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
