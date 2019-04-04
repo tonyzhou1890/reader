@@ -1,5 +1,5 @@
 <template>
-  <div id="app por">
+  <div id="app" class="por">
     <tu-book
       :text="message"
       :width="width"
@@ -7,18 +7,31 @@
       :percent="defaultPercent"
       :single="single"
       @pageChange="pageChange"
+      @click.native="middleClick"
+      ref="book"
+      :style="`z-index: 1;`"
     />
     <div
+      v-show="showSetting"
+      :style="`z-index: 2`"
       @click="toggleSetting"
-      class="middle-level poa">
-    </div>
+      class="middle-cover poa"></div>
+    <setting
+      v-show="showSetting"
+      :style="`z-index: 3;`"
+      :position="position"
+    />
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Setting from './components/Setting'
 export default {
   name: 'App',
+  components: {
+    Setting
+  },
   data() {
     return {
       width: null,
@@ -27,7 +40,8 @@ export default {
       total: null,
       page: null,
       percent: null,
-      defaultPercent: null
+      defaultPercent: null,
+      showSetting: false
     }
   },
   computed: {
@@ -35,6 +49,9 @@ export default {
       let temp = (this.width && this.height) || false
       temp = this.width < this.height
       return temp
+    },
+    position() {
+      return this.width > 500 ? 'top' : 'bottom'
     }
   },
   created() {
@@ -80,8 +97,15 @@ export default {
           })
         })
     },
-    toggleSetting(e) {
-      console.log(e)
+    middleClick(e) {
+      const rect = this.$refs.book.$el.getBoundingClientRect()
+      const left = e.clientX - rect.left
+      if (left > rect.width / 3 && left < rect.width / 3 * 2) {
+        this.toggleSetting()
+      }
+    },
+    toggleSetting() {
+      this.showSetting = !this.showSetting
     }
   }
 }
@@ -93,11 +117,11 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  .middle-level {
-    top: 0;
-    left: 33.333%;
-    width: 33.333%;
+  .middle-cover {
+    width: 100%;
     height: 100%;
+    top: 0;
+    left: 0;
   }
 }
 </style>

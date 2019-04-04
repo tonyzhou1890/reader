@@ -9,13 +9,19 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import '@/styles/index.scss' // global css
 import './icons' // icon
 
-import 'element-ui/lib/theme-chalk/index.css'
-import { Message, MessageBox, Loading } from 'element-ui'
+import '../theme/index.css'
+import { Row, Col, Select, Option, Slider, ColorPicker, Message, MessageBox, Loading } from 'element-ui'
 
 import ui from 'tiny-utils.js/UI'
 
 import debounce from 'lodash/debounce'
 
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(Slider)
+Vue.use(ColorPicker)
 Vue.use(Loading.directive)
 
 Vue.prototype.$loading = Loading.service
