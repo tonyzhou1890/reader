@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app por">
     <tu-book
       :text="message"
       :width="width"
@@ -8,6 +8,10 @@
       :single="single"
       @pageChange="pageChange"
     />
+    <div
+      @click="toggleSetting"
+      class="middle-level poa">
+    </div>
   </div>
 </template>
 
@@ -75,16 +79,25 @@ export default {
             type: 'error'
           })
         })
+    },
+    toggleSetting(e) {
+      console.log(e)
     }
   }
 }
 </script>
 
-<style>
+<style lang='scss' scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  .middle-level {
+    top: 0;
+    left: 33.333%;
+    width: 33.333%;
+    height: 100%;
+  }
 }
 </style>
