@@ -10,7 +10,7 @@ import '@/styles/index.scss' // global css
 import './icons' // icon
 
 import '../theme/index.css'
-import { Row, Col, Select, Option, Slider, ColorPicker, Message, MessageBox, Loading } from 'element-ui'
+import { Row, Col, Button, Input, Select, Option, Slider, ColorPicker, Message, MessageBox, Loading } from 'element-ui'
 
 import ui from 'tiny-utils.js/UI'
 
@@ -18,6 +18,8 @@ import debounce from 'lodash/debounce'
 
 Vue.use(Row)
 Vue.use(Col)
+Vue.use(Button)
+Vue.use(Input)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(Slider)

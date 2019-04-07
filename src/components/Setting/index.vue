@@ -99,8 +99,16 @@
         <p class="item-label">背景</p>
         <el-row class="item-content">
           <el-col
+            v-for="(item, index) in color"
+            :key="index"
             :span="6"
-            class="item-content-sub-item"></el-col>
+            class="item-content-sub-item">
+            <span
+              @click="bindSetting.background = item.value"
+              :style="`background-color: ${item.value};`"
+              :class="[bindSetting.background === item.value ? 'active' : '']"
+              class="background-sample">&emsp;</span>
+          </el-col>
           <el-col
             :span="6"
             class="item-content-sub-item">
@@ -111,26 +119,39 @@
           </el-col>
         </el-row>
       </li>
+      <li class="setting-item setting-action">
+        <el-button
+          size="mini"
+          @click="setDefault"
+        >默认</el-button>
+        <el-button
+          size="mini"
+          @click="changeSetting"
+        >确定</el-button>
+      </li>
     </ul>
     <div
       v-show="curTab === 'jump'"
       class="jump setting-content">
       <div class="page">
-
+        <el-slider
+          v-model="bindPage"
+          :min="0"
+          :max="total"
+          show-input
+        ></el-slider>
+        <el-row class="jump-button-row">
+          <el-button
+            type="primary"
+            @click="changePage"
+          >跳页</el-button>
+        </el-row>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-const defaultSetting = {
-  fontFamily: 'Microsoft YaHei',
-  fontSize: 16,
-  lineHeight: 24,
-  padding: 25,
-  color: '#333',
-  background: '#fff5ee'
-}
 export default {
   name: 'Setting',
   props: {
@@ -143,12 +164,20 @@ export default {
       default() {
         return {}
       }
+    },
+    page: {
+      type: Number,
+      default: 0
+    },
+    total: {
+      type: Number,
+      default: 1
     }
   },
   data() {
     return {
       curTab: 'setting',
-      bindSetting: Object.assign({}, defaultSetting),
+      bindSetting: Object.assign({}, this.setting),
       fontFamily: [
         {
           value: 'Microsoft YaHei',
@@ -177,12 +206,32 @@ export default {
         {
           value: '#fff5ee'
         }
-      ]
+      ],
+      bindPage: this.page
     }
   },
   computed: {
     computedPosition() {
       return this.position === 'bottom' ? `bottom: 0;` : 'top: 0;'
+    }
+  },
+  watch: {
+    page: {
+      handler() {
+        this.bindPage = this.page
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    setDefault() {
+      this.bindSetting = Object.assign({}, this.setting)
+    },
+    changeSetting() {
+      this.$emit('dataChange', Object.assign({}, this.bindSetting))
+    },
+    changePage() {
+      this.$emit('pageChange', this.bindPage)
     }
   }
 }
@@ -234,10 +283,12 @@ $outline: 5px solid #444;
         width: calc(100% - 50px);
         .item-content-sub-item {
           height: 20px;
-          .color-sample {
+          .color-sample,
+          .background-sample {
             width: 28px;
             height: 28px;
             display: inline-block;
+            cursor: pointer;
             &.active {
               outline: $outline;
             }
@@ -248,6 +299,14 @@ $outline: 5px solid #444;
             }
           }
         }
+      }
+      &.setting-action {
+        text-align: center;
+      }
+    }
+    .page {
+      .jump-button-row {
+        text-align: center;
       }
     }
   }
