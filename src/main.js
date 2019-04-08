@@ -10,7 +10,7 @@ import '@/styles/index.scss' // global css
 import './icons' // icon
 
 import '../theme/index.css'
-import { Row, Col, Button, Input, Select, Option, Slider, ColorPicker, Message, MessageBox, Loading } from 'element-ui'
+import { Row, Col, Button, Input, Select, Option, Upload, Slider, ColorPicker, Message, MessageBox, Loading } from 'element-ui'
 
 import ui from 'tiny-utils.js/UI'
 
@@ -22,6 +22,7 @@ Vue.use(Button)
 Vue.use(Input)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Upload)
 Vue.use(Slider)
 Vue.use(ColorPicker)
 Vue.use(Loading.directive)

@@ -35,7 +35,9 @@
       @pageChange="changePage"
     />
     <local
+      v-if="showLocal"
       :style="`z-index: 4;`"
+      @get-data="getLocalData"
     />
   </div>
 </template>
@@ -75,7 +77,9 @@ export default {
         lastSelectionType: ''
       },
       address: null,
-      loading: false
+      loading: false,
+      local: null,
+      showLocal: false
     }
   },
   computed: {
@@ -106,8 +110,8 @@ export default {
     pageChange(data) {
       this.total = data.total
       this.page = data.page
-      if (this.address) {
-        this.setProcess(this.address, this.page / this.total * 100)
+      if (this.address || this.local) {
+        this.setProcess(this.address || this.local, this.page / this.total * 100)
       }
     },
     resolveUrl() {
@@ -119,7 +123,16 @@ export default {
       const address = temp.filter(item => { return item[0] === 'address' })
       if (address.length) {
         this.getAddressTxt(address[0][1])
+        return
       }
+      // 是否通过message通信
+      const message = temp.filter(item => item[0] === 'message')
+      if (message.length) {
+        console.log(message)
+        return
+      }
+      // 其余默认local
+      this.showLocal = true
     },
     getAddressTxt(url) {
       this.loading = true
@@ -208,6 +221,12 @@ export default {
         return
       }
       this.defaultPercent = Number(window.localStorage.getItem(key))
+    },
+    getLocalData(e) {
+      this.message = e.value
+      this.local = e.key
+      this.getProcess(this.local)
+      this.showLocal = false
     }
   }
 }
