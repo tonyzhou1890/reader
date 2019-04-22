@@ -21,7 +21,7 @@
     "sass-loader": "^7.1.0",
     "svg-sprite-loader": "^4.1.3",
     "svgo": "^1.2.0",
-    "tiny-utils.js": "^1.0.9",
+    "tiny-utils.js": "^1.0.10",
     "vue": "^2.5.2"
   },
   "devDependencies": {

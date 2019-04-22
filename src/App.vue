@@ -158,7 +158,12 @@ export default {
         this.mouseEvent.lastSelectionType = temp
         return
       }
-      if (e.type === 'mouseup' && Math.abs(e.clientX - this.mouseEvent.down.clientX) < 1 && Math.abs(e.clientY - this.mouseEvent.down.clientY) < 1 && this.mouseEvent.lastSelectionType !== 'Range') {
+      if (e.type === 'mouseup' &&
+        e.which === 1 &&
+        this.mouseEvent.down &&
+        Math.abs(e.clientX - this.mouseEvent.down.clientX) < 1 &&
+        Math.abs(e.clientY - this.mouseEvent.down.clientY) < 1 &&
+        this.mouseEvent.lastSelectionType !== 'Range') {
         const rect = this.$refs.book.$el.getBoundingClientRect()
         const left = e.clientX - rect.left
         if (left > rect.width / 3 && left < rect.width / 3 * 2) {
