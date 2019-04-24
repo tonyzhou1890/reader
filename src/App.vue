@@ -177,6 +177,7 @@ export default {
     },
     settingChange(data) {
       this.setting = Object.assign(this.setting, data)
+      this.defaultPercent = this.page / this.total * 100
       this.toggleSetting()
       this.storeSetting()
     },
