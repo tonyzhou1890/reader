@@ -99,14 +99,18 @@ export default {
     this.getSetting()
   },
   methods: {
+    // 监听窗口尺寸变化
     watchClientSize() {
       window.addEventListener('resize', this._.debounce(this.settingSize, 1000))
     },
+    // 设定book组件尺寸
     settingSize() {
       const s = window.getComputedStyle(document.body)
       this.width = Number(s.width.split('px')[0])
       this.height = Number(s.height.split('px')[0])
+      this.changePercent()
     },
+    // 页码变化处理函数
     pageChange(data) {
       this.total = data.total
       this.page = data.page
@@ -114,6 +118,7 @@ export default {
         this.setProcess(this.address || this.local, this.page / this.total * 100)
       }
     },
+    // 判定是哪种方式获取文本
     resolveUrl() {
       const temp = window.location.search.slice(1).split('&')
       temp.map((item, index) => {
@@ -134,6 +139,7 @@ export default {
       // 其余默认local
       this.showLocal = true
     },
+    // url指定地址需要异步获取文本
     getAddressTxt(url) {
       this.loading = true
       axios.get(url)
@@ -151,6 +157,7 @@ export default {
           this.loading = false
         })
     },
+    // 点击阅读器1/3 - 2/3区域
     middleClick(e) {
       if (e.type === 'mousedown') {
         this.mouseEvent.down = e
@@ -172,20 +179,28 @@ export default {
       }
       this.mouseEvent.down = null
     },
+    // 设置面板显示隐藏
     toggleSetting() {
       this.showSetting = !this.showSetting
     },
+    // 应用设置
     settingChange(data) {
       this.setting = Object.assign(this.setting, data)
-      this.defaultPercent = this.page / this.total * 100
+      this.changePercent()
       this.toggleSetting()
       this.storeSetting()
     },
+    // 跳页
     changePage(val) {
       this.page = val
-      this.defaultPercent = this.page / this.total * 100
+      this.changePercent()
       this.toggleSetting()
     },
+    // 改变默认阅读进度
+    changePercent() {
+      this.defaultPercent = this.page / this.total * 100
+    },
+    // 将设置存储到localStorage
     storeSetting() {
       storage('setting', this.setting)
         .then(res => {})
@@ -197,6 +212,7 @@ export default {
           })
         })
     },
+    // 从localStorage获取设置
     getSetting() {
       if (!window.localStorage) {
         this.$message({
@@ -211,6 +227,7 @@ export default {
         this.setting = Object.assign(this.setting, JSON.parse(s))
       }
     },
+    // 将进度存储到localStorage
     setProcess(key, val) {
       storage(key, val)
         .then(res => {})
@@ -222,12 +239,14 @@ export default {
           })
         })
     },
+    // 从localStorage读取进度
     getProcess(key) {
       if (!window.localStorage || window.localStorage.getItem(key) === null) {
         return
       }
       this.defaultPercent = Number(window.localStorage.getItem(key))
     },
+    // 从本地读取文件处理函数
     getLocalData(e) {
       this.message = e.value
       this.local = e.key
